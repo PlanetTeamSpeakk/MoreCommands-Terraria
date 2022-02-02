@@ -264,3 +264,8 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# Rider
+.idea/
+.vs/
+Keys.snk
