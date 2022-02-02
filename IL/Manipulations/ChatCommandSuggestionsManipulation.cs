@@ -46,9 +46,7 @@ public class ChatCommandSuggestionsManipulation : ILManipulation
                 {
                     Suggestions suggestions = MoreCommands.RequestedSuggestions.suggestions;
                     float x = FontAssets.MouseText.Value.MeasureString(Main.chatText[..(suggestions.Range.Start + 1)]).X + 78f;
-                    UI = new SuggestionsUI(suggestions, x);
-                    UI.Activate();
-                    MoreCommands.SuggestionsInterface.SetState(UI);
+                    MoreCommands.SuggestionsInterface.SetState(UI = new SuggestionsUI(suggestions, x));
                 }
             }
             else

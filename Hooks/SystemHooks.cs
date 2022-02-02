@@ -37,7 +37,14 @@ public class SystemHooks : ModSystem
             
             return true;
         }, InterfaceScaleType.UI));
-        this.PostSetupContent();
+        
+        layers.Insert(i, new LegacyGameInterfaceLayer("MoreCommands: disposal", delegate
+        {
+            if (LastGameTime is not null && MoreCommands.DisposalInterface?.CurrentState is not null)
+                MoreCommands.DisposalInterface.Draw(Main.spriteBatch, LastGameTime);
+            
+            return true;
+        }, InterfaceScaleType.UI));
     }
 
     public override void PostUpdateInput()
@@ -55,6 +62,7 @@ public class SystemHooks : ModSystem
     {
         MoreCommands.CommandTileInterface.Update(LastGameTime = time);
         MoreCommands.SuggestionsInterface.Update(time);
+        MoreCommands.DisposalInterface.Update(time);
     }
 
     public override void SaveWorldData(TagCompound tag)

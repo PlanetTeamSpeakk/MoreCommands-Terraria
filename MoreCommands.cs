@@ -71,6 +71,8 @@ public class MoreCommands : Mod
 	internal static UserInterface CommandTileInterface;
 	internal static CommandTileUI CommandTileUI;
 	internal static UserInterface SuggestionsInterface;
+	internal static UserInterface DisposalInterface;
+	internal static DisposalUI DisposalUI;
 	private static (uint requestId, Suggestions suggestions) _clientSuggestions = (0, null);
 	private static readonly IList<Command> CommandsBackend = new List<Command>();
 	private static readonly IList<Detour> Detours = new List<Detour>();
@@ -96,7 +98,12 @@ public class MoreCommands : Mod
 			CommandTileInterface = new UserInterface();
 			CommandTileUI = new CommandTileUI();
 			CommandTileUI.Initialize();
+			
 			SuggestionsInterface = new UserInterface();
+
+			DisposalInterface = new UserInterface();
+			DisposalUI = new DisposalUI();
+			DisposalUI.Initialize();
 			
 			ChatManager.Register<ClickTagHandler>("click");
 			ChatManager.Register<HoverTagHandler>("hover");

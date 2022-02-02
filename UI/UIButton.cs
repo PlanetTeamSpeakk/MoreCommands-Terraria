@@ -28,6 +28,4 @@ public class UIButton : UIPanel
         textElement.Top.Pixels = -4;
         Append(textElement);
     }
-    
-    
 }

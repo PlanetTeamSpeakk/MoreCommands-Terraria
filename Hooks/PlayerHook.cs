@@ -3,7 +3,6 @@ using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
 
 namespace MoreCommands.Hooks;
 
@@ -27,4 +26,7 @@ public class PlayerHook : ModPlayer
         packet.Write(true);
         packet.Send(fromWho);
     }
+
+    public override bool ShiftClickSlot(Item[] inventory, int context, int slot) => 
+        MoreCommands.DisposalInterface.CurrentState != null && MoreCommands.DisposalUI.OnShiftClick(inventory, slot);
 }

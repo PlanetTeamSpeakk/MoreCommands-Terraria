@@ -20,7 +20,7 @@ public class CommandTileUI : UIState
     private string _lastOutput;
     private UITextBox _commandText;
     private UITextBox _lastOutputText;
-    private int _boxSelected = 0;
+    private int _boxSelected;
     private int _commandOffset;
     private int _lastOutputOffset;
     
@@ -42,8 +42,8 @@ public class CommandTileUI : UIState
         _panel.Width.Set(600, 0);
         _panel.Height.Set(300, 0);
         _panel.HAlign = _panel.VAlign = .5f;
-        Recalculate();
         Append(_panel);
+        Recalculate();
     }
 
     private void AppendTexts()
