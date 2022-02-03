@@ -17,7 +17,7 @@ public class UIItemSlotWrapper : UIElement
     private readonly int _context;
     private readonly float _scale;
 
-    internal UIItemSlotWrapper(int context = ItemSlot.Context.BankItem, float scale = 1f)
+    public UIItemSlotWrapper(int context = ItemSlot.Context.BankItem, float scale = 1f)
     {
         _context = context;
         _scale = scale;
@@ -51,9 +51,7 @@ public class UIItemSlotWrapper : UIElement
         Main.inventoryScale = _scale;
         Rectangle rectangle = GetDimensions().ToRectangle();
 
-        bool contains = ContainsPoint(Main.MouseScreen);
-
-        if (contains && !PlayerInput.IgnoreMouseInterface)
+        if (ContainsPoint(Main.MouseScreen) && !PlayerInput.IgnoreMouseInterface)
         {
             Main.LocalPlayer.mouseInterface = true;
             ItemSlot.Handle(_inv, _context);

@@ -116,7 +116,7 @@ public class ChatCommandSyntaxManipulation : ILManipulation
                                 {
                                     int from = lastRange.Value.End + (redirect && i == 0 ? offset : 0);
                                     int to = node.Range.Start;
-                                    
+
                                     if (to > from)
                                         snippets.Add(new TextSnippet(StringRange.Between(from, to).Get(redirect && i == 0 ? Main.chatText[1..] : text)));
                                     break;
@@ -162,9 +162,12 @@ public class ChatCommandSyntaxManipulation : ILManipulation
                 } while (last.Node.Redirect is not null);
 
                 if (offset < Main.chatText.Length - 1)
+                {
                     // Add invalid arguments in red (or grey if legacy)
-                    snippets.Add(new TextSnippet(Main.chatText[(offset + 1)..], redirects > 0 /* cannot redirect to legacy command */ || !MoreCommands.LegacyCommands.Contains(
-                        Main.chatText[(offset + 1)..(Main.chatText.Contains(' ') ? Main.chatText.IndexOf(' ') : Main.chatText.Length)]) ? Color.Red : Color.LightGray));
+                    string text = Main.chatText[(offset + 1)..];
+                    snippets.Add(new TextSnippet(text, redirects > 0 /* cannot redirect to legacy command */ || !MoreCommands.LegacyCommands.Contains(
+                        text[..(text.Contains(' ') ? text.IndexOf(' ') : text.Length)]) ? Color.Red : Color.LightGray));
+                }
 
                 lastSnippets = snippets.ToImmutableList();
                 usage = string.Join(" OR ", nodes
