@@ -21,9 +21,11 @@ public class IdArgumentType : ArgumentType<int>
     private IdArgumentType(IdType type) => _type = type;
     
     public static IdArgumentType Item => new(IdType.Item);
+    
     public static IdArgumentType Buff => new(IdType.Buff);
     
     public static IdArgumentType Npc => new(IdType.Npc);
+    
     public static IdArgumentType Tile => new(IdType.Tile);
     
     public override int Parse(IStringReader reader)

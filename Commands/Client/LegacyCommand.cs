@@ -13,7 +13,7 @@ public class LegacyCommand : Command
     
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
-        dispatcher.Register(Literal("legacy")
+        dispatcher.Register(RootLiteral("legacy")
             .Executes(ctx =>
             {
                 // Distinct call so modcommands overwriting vanilla commands don't cause the command to be listed twice.
