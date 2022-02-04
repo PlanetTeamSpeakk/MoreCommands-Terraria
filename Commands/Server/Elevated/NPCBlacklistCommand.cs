@@ -20,7 +20,7 @@ public class NPCBlacklistCommand : Command
 {
     public override CommandType Type => CommandType.World;
     public override string Description => "Prevent certain types of NPCs from spawning in your world.";
-    private static readonly List<int> Blacklist = new();
+    private static readonly HashSet<int> Blacklist = new();
 
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
@@ -63,17 +63,14 @@ public class NPCBlacklistCommand : Command
 
     public class DataSystemHook : ModSystem
     {
-        public override void SaveWorldData(TagCompound tag)
-        {
-            tag.Set("NPC_Blacklist", Blacklist);
-        }
+        public override void SaveWorldData(TagCompound tag) => tag.Set("NPC_Blacklist", Blacklist);
 
         public override void LoadWorldData(TagCompound tag)
         {
             if (!tag.ContainsKey("NPC_Blacklist")) return;
             
             Blacklist.Clear();
-            Blacklist.AddRange(tag.Get<List<int>>("NPC_Blacklist"));
+            tag.Get<List<int>>("NPC_Blacklist").ForEach(id => Blacklist.Add(id));
         }
     }
     
