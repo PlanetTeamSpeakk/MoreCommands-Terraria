@@ -109,7 +109,7 @@ public class MoreCommands : Mod
 			ChatManager.Register<HoverTagHandler>("hover");
 			ChatManager.Register<StyledTagHandler>("styled");
 
-			ScreenShaderData rainbowScreenData = new(new Ref<Effect>(Assets.Request<Effect>("Misc/Shaders/RainbowShader",
+			ScreenShaderData rainbowScreenData = new(new Ref<Effect>(Assets.Request<Effect>("Assets/Shaders/RainbowShader",
 				AssetRequestMode.ImmediateLoad).Value), "RainbowScreen");
 			rainbowScreenData.SwapProgram("RainbowScreen");
 			Filters.Scene["MCRainbow"] = new Filter(rainbowScreenData, EffectPriority.Medium);
