@@ -15,7 +15,7 @@ public class CommandSource
     public bool IsOp { get; }
     public bool IsSilent { get; }
 
-    public CommandSource(CommandCaller caller) : this(caller, caller.Player?.BottomLeft ?? Vector2.Zero,
+    public CommandSource(CommandCaller caller) : this(caller, caller.Player?.TopLeft ?? Vector2.Zero,
         // Either the player is on singleplayer and has cheats enabled, the player is an operator on the server or the server told the client they're an operator.
         Main.netMode == NetmodeID.SinglePlayer && ClientConfig.Instance.EnableCheats || 
         Main.netMode != NetmodeID.SinglePlayer && (caller.Player is null || 

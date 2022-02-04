@@ -95,7 +95,7 @@ public static class Util
     public static void Teleport(Player player, (int x, int y) pos)
     {
         (int x, int y) = pos;
-        player.Teleport(new Vector2(x, y), 2);
+        player.Teleport(new Vector2(x, y - player.height), 2);
         player.velocity = Vector2.Zero;
 
         if (Main.netMode != NetmodeID.Server) return;
