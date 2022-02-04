@@ -63,7 +63,7 @@ public class NPCBlacklistCommand : Command
 
     public class DataSystemHook : ModSystem
     {
-        public override void SaveWorldData(TagCompound tag) => tag.Set("NPC_Blacklist", Blacklist);
+        public override void SaveWorldData(TagCompound tag) => tag.Set("NPC_Blacklist", Blacklist.ToList()); // TagCompound doesn't support sets
 
         public override void LoadWorldData(TagCompound tag)
         {
