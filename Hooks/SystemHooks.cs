@@ -54,7 +54,7 @@ public class SystemHooks : ModSystem
 
         if (MoreCommands.Rainbow)
             Filters.Scene["MCRainbow"].GetShader().UseTargetPosition(
-                new Vector2(Main.MouseScreen.X / Main.screenWidth, Main.MouseScreen.Y / Main.screenHeight) +
+                new Vector2(Main.MouseScreen.X / Main.screenWidth, Main.MouseScreen.Y / Main.screenHeight) + // Values from 0.0 to 1.0, like HLSL uses.
                 new Vector2(Main.offScreenRange, Main.offScreenRange)); // offScreenRange gets subtracted causing the entire shader to completely fail to make a radial gradient.
     }
 
