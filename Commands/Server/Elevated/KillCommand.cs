@@ -24,7 +24,7 @@ public class KillCommand : Command
                     List<Entity> entities = EntityArgumentType.GetEntities(ctx, "entities");
                     entities.ForEach(entity => entity.Kill());
                     
-                    Reply(ctx, $"Successfully killed {Coloured(entities.Count)} entities.");
+                    Reply(ctx, $"Successfully killed {Coloured(entities.Count)} entit{(entities.Count == 1 ? "y" : "ies")}.");
                     return entities.Count;
                 })));
     }
