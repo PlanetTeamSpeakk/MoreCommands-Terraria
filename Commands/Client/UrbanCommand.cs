@@ -24,7 +24,7 @@ public class UrbanCommand : Command
 
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
-        dispatcher.Register(Literal("urban")
+        dispatcher.Register(RootLiteral("urban")
             .Then(Argument("query", Arguments.GreedyString())
                 .Executes(ctx =>
                 {

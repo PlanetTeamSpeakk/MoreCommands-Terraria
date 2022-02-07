@@ -13,7 +13,7 @@ public class SuicideCommand : Command
     
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
-        dispatcher.Register(Literal("suicide")
+        dispatcher.Register(RootLiteral("suicide")
             .Executes(ctx =>
             {
                 ctx.Source.Player.KillMe(PlayerDeathReason.ByCustomReason($"{ctx.Source.Player.name} has taken their own life."), double.MaxValue, 0);

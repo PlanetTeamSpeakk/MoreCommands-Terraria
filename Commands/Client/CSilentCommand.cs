@@ -11,6 +11,6 @@ public class CSilentCommand : Command
     
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
-        dispatcher.Register(Literal("csilent").Redirect(dispatcher.GetRoot(), ctx => ctx.Source.WithSilent(true)));
+        dispatcher.Register(RootLiteral("csilent").Redirect(dispatcher.GetRoot(), ctx => ctx.Source.WithSilent(true)));
     }
 }
