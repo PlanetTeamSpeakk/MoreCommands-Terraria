@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Brigadier.NET;
-using Brigadier.NET.Builder;
 using Brigadier.NET.Context;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Misc;
 using MoreCommands.Utils;
 using Terraria;
@@ -23,13 +23,13 @@ public class BuffCommand : Command
                 .Then(Argument("buff", IdArgumentType.Buff)
                     .Then(Argument("length", Arguments.Integer(1))
                         .Executes(ExecuteAdd)
-                        .Then(Argument("player", PlayerArgumentType.Player)
+                        .Then(Argument("players", EntityArgumentType.Players)
                             .Executes(ExecuteAdd)))))
             
             .Then(Literal("clear")
                 .Executes(ctx => ExecuteClear(ctx, null))
-                .Then(Argument("player", PlayerArgumentType.Player)
-                    .Executes(ctx => ExecuteClear(ctx, ctx.GetArgument<Player>("player")))))
+                .Then(Argument("players", EntityArgumentType.Players)
+                    .Executes(ctx => ExecuteClear(ctx, EntityArgumentType.GetPlayers(ctx, "players")))))
             
             .Then(Literal("lookup")
                 .Then(Argument("query", Arguments.GreedyString())
@@ -38,29 +38,35 @@ public class BuffCommand : Command
 
     private static int ExecuteAdd(CommandContext<CommandSource> ctx)
     {
-        Player toAffect = ctx.Nodes.Any(node => node.Node.Name == "player") ? ctx.GetArgument<Player>("player") : ctx.Source.Player;
+        IEnumerable<Player> toAffect = (ctx.Nodes.Any(node => node.Node.Name == "players") ? EntityArgumentType.GetPlayers(ctx, "players") : Util.Singleton(ctx.Source.Player)).ToList();
         
         int buff = ctx.GetArgument<int>("buff");
         int length = ctx.GetArgument<int>("length");
-        toAffect.AddBuff(buff, length * 60);
-                            
-        Reply(toAffect, $"You have been given the {Lang.GetBuffName(buff)} buff for {length} seconds.");
-        if (!ctx.Source.IsPlayer || toAffect != ctx.Source.Player)
-            Reply(ctx, $"{toAffect.name} has been given the {Lang.GetBuffName(buff)} buff for {length} seconds.");
+        foreach (Player player in toAffect)
+        {
+            player.AddBuff(buff, length * 60);
+            Reply(player, $"You have been given the {Lang.GetBuffName(buff)} buff for {length} seconds.");
+        }
+        
+        if (!ctx.Source.IsPlayer || !toAffect.Contains(ctx.Source.Player))
+            Reply(ctx, $"{Coloured(toAffect.Count() == 1 ? toAffect.First().name + " has" : toAffect.Count() + " players have")} been given the {Coloured(Lang.GetBuffName(buff))} buff for {Coloured(length)} seconds.");
         
         return buff;
     }
 
-    private static int ExecuteClear(CommandContext<CommandSource> ctx, Player player)
+    private static int ExecuteClear(CommandContext<CommandSource> ctx, IEnumerable<Player> players)
     {
-        Player toClear = player ?? ctx.Source.Player;
+        IEnumerable<Player> toClear = (players ?? Util.Singleton(ctx.Source.Player)).ToList();
 
-        for (int i = 0; i < Player.MaxBuffs; i++)
-            toClear.DelBuff(i);
+        foreach (Player player in toClear)
+            for (int i = 0; i < Player.MaxBuffs; i++)
+            {
+                player.DelBuff(i);
+                Reply(player, "Your buffs have been cleared.");
+            }
         
-        Reply(toClear, "Your buffs have been cleared.");
-        if (!ctx.Source.IsPlayer || toClear != ctx.Source.Player)
-            Reply(ctx, $"{toClear.name}'s buffs have been cleared.");
+        if (!ctx.Source.IsPlayer || !toClear.Contains(ctx.Source.Player))
+            Reply(ctx, $"{Coloured(toClear.Count() == 1 ? toClear.First().name + " has" : toClear.Count() + " players have")}'s buffs have been cleared.");
 
         return 1;
     }
