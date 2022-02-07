@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Brigadier.NET;
 using Brigadier.NET.Builder;
 using Brigadier.NET.Context;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Misc;
 using MoreCommands.Utils;
 using Terraria;
@@ -22,21 +24,25 @@ public class GiveCommand : Command
                 .Executes(ctx => Execute(ctx, 1))
                 .Then(Argument("count", Arguments.Integer(1))
                     .Executes(ctx => Execute(ctx, ctx.GetArgument<int>("count")))
-                    .Then(Argument("player", PlayerArgumentType.Player)
+                    .Then(Argument("players", EntityArgumentType.Players)
                         .Executes(ctx => Execute(ctx, ctx.GetArgument<int>("count")))))));
     }
 
     private static int Execute(CommandContext<CommandSource> ctx, int count)
     {
-        Player player;
+        IEnumerable<Player> players;
 
-        if (ctx.Nodes.Any(node => "player" == node.Node.Name))
-            player = ctx.GetArgument<Player>("player");
+        if (ctx.Nodes.Any(node => "players" == node.Node.Name))
+            players = EntityArgumentType.GetPlayers(ctx, "players");
         else if (!ctx.Source.IsPlayer) throw MCBuiltInExceptions.ReqPlayer.Create();
-        else player = ctx.Source.Caller.Player;
-        
+        else players = Util.Singleton(ctx.Source.Caller.Player);
 
-        player.QuickSpawnItem(ctx.GetArgument<int>("item"), count);
+        players = players.ToList();
+        foreach (Player player in players)
+            player.QuickSpawnItem(ctx.GetArgument<int>("item"), count);
+        
+        Reply(ctx, $"Gave {Coloured(count + "x")} {Coloured(IdHelper.GetName(IdType.Item, ctx.GetArgument<int>("item")))} to " +
+                   $"{(players.Count() == 1 ? ctx.Source.IsPlayer && players.First() == ctx.Source.Player ? "you" : Coloured(players.First().name) : Coloured(players.Count() + " players"))}.");
         return 1;
     }
 }

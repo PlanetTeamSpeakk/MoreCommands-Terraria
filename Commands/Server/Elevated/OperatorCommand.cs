@@ -1,8 +1,8 @@
 ﻿using Brigadier.NET;
-using MoreCommands.ArgumentTypes;
+using Microsoft.Xna.Framework;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Hooks;
 using MoreCommands.Misc;
-using MoreCommands.Utils;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,16 +17,16 @@ public class OperatorCommand : Command
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
         dispatcher.Register(RootLiteralReq("op").Redirect(dispatcher.Register(RootLiteralReq("operator")
-            .Then(Argument("player", PlayerArgumentType.Player)
+            .Then(Argument("player", EntityArgumentType.Players)
                 .Executes(ctx =>
                 {
-                    Player player = ctx.GetArgument<Player>("player");
+                    Player player = EntityArgumentType.GetPlayer(ctx, "player");
 
                     SystemHooks systemHooks = ModContent.GetInstance<SystemHooks>();
                     if (MoreCommands.IsOp(player.whoAmI)) systemHooks.Op(player.whoAmI);
                     else systemHooks.Deop(player.whoAmI);
                     
-                    Reply(ctx, $"Player {player.name} is {(MoreCommands.IsOp(player.whoAmI) ? "[c/66ff00:now]" : "[c/ff0000:no longer]")} an operator.");
+                    Reply(ctx, $"Player {player.name} is {(MoreCommands.IsOp(player.whoAmI) ? Coloured("now", Color.Green) : Coloured("no longer", Color.Red))} an operator.");
                     return MoreCommands.IsOp(player.whoAmI) ? 2 : 1;
                 })))));
     }

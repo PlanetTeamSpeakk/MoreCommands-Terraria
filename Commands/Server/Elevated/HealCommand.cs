@@ -1,8 +1,12 @@
-﻿using Brigadier.NET;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Brigadier.NET;
 using Brigadier.NET.Context;
 using Microsoft.Xna.Framework;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Misc;
+using MoreCommands.Utils;
 using Terraria;
 using Terraria.ModLoader;
 
@@ -17,20 +21,23 @@ public class HealCommand : Command
     {
         dispatcher.Register(RootLiteralReq("heal")
             .Executes(ctx => Execute(ctx, null))
-            .Then(Argument("player", PlayerArgumentType.Player)
-                .Executes(ctx => Execute(ctx, ctx.GetArgument<Player>("player")))));
+            .Then(Argument("players", EntityArgumentType.Players)
+                .Executes(ctx => Execute(ctx, EntityArgumentType.GetPlayers(ctx, "players")))));
     }
 
-    private static int Execute(CommandContext<CommandSource> ctx, Player player)
+    private static int Execute(CommandContext<CommandSource> ctx, IEnumerable<Player> players)
     {
-        Player toHeal = player ?? ctx.Source.Player;
+        IEnumerable<Player> toHeal = (players ?? Util.Singleton(ctx.Source.Player)).ToList();
         
-        toHeal.statLife = toHeal.statLifeMax;
-        toHeal.statMana = toHeal.statManaMax;
+        foreach (Player player in toHeal)
+        {
+            player.statLife = player.statLifeMax;
+            player.statMana = player.statManaMax;
+            Reply(player, "You have been healed!", Color.Green);
+        }
         
-        Reply(toHeal, "You have been healed!", Color.Green);
-        if (!ctx.Source.IsPlayer || toHeal != ctx.Source.Player)
-            Reply(ctx, $"Player {toHeal.name} has been healed.", Color.Green);
+        if (!ctx.Source.IsPlayer || !toHeal.Contains(ctx.Source.Player))
+            Reply(ctx, $"{(toHeal.Count() == 1 ? Coloured(toHeal.First().name) + " has" : Coloured(toHeal.Count()) + " players have")} been healed.", Color.Green);
 
         return 1;
     }
