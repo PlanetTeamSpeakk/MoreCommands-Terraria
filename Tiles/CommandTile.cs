@@ -12,6 +12,8 @@ namespace MoreCommands.Tiles;
 
 public class CommandTile : ModTile
 {
+    public override string Texture => "MoreCommands/Assets/CommandTile";
+
     public override void SetStaticDefaults()
     {
         Main.tileFrameImportant[Type] = true;
@@ -75,6 +77,8 @@ public class CommandTile : ModTile
 
     public class CommandTileItem : ModItem
     {
+        public override string Texture => "MoreCommands/Assets/CommandTileItem";
+        
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.DirtBlock);
