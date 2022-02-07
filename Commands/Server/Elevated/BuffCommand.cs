@@ -49,7 +49,8 @@ public class BuffCommand : Command
         }
         
         if (!ctx.Source.IsPlayer || !toAffect.Contains(ctx.Source.Player))
-            Reply(ctx, $"{Coloured(toAffect.Count() == 1 ? toAffect.First().name + " has" : toAffect.Count() + " players have")} been given the {Coloured(Lang.GetBuffName(buff))} buff for {Coloured(length)} seconds.");
+            Reply(ctx, $"{(toAffect.Count() == 1 ? Coloured(toAffect.First().name) + " has" : Coloured(toAffect.Count()) + " players have")} been given the " +
+                       $"{Coloured(Lang.GetBuffName(buff))} buff for {Coloured(length)} seconds.");
         
         return buff;
     }
