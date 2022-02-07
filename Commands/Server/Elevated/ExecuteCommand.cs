@@ -39,12 +39,12 @@ public class ExecuteCommand : Command
             .Then(Literal("privileged")
                 .Redirect(execute, ctx => ctx.Source.WithOp(true)))
             .Then(Literal("as")
-                .Then(Argument("player", PlayerArgumentType.Player)
+                .Then(Argument("player", EntityArgumentType.Player)
                     .Fork(execute, ctx => 
-                        new List<CommandSource>(new []{ctx.Source.WithCaller(new ServerPlayerCommandCaller(ctx.GetArgument<Player>("player")))}))))
+                        Util.Singleton(ctx.Source.WithCaller(new ServerPlayerCommandCaller(EntityArgumentType.GetPlayer(ctx, "player")))).ToList())))
             .Then(Literal("at")
-                .Then(Argument("player", PlayerArgumentType.Player)
-                    .Fork(execute, ctx => new List<CommandSource>(new []{ctx.Source.WithPosition(ctx.GetArgument<Player>("player").Center)})))
+                .Then(Argument("player", EntityArgumentType.Player)
+                    .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center)).ToList()))
                 // .Then(Literal("store")
                 //     .Then(addStoreArguments(execute, Literal("result"), true))
                 //     .Then(addStoreArguments(execute, Literal("success"), false)))
@@ -52,8 +52,8 @@ public class ExecuteCommand : Command
                     .Then(Argument("pos", PositionArgumentType.Pos)
                         .Redirect(execute, ctx => ctx.Source.WithPosition(PositionArgumentType.GetPosition(ctx, "pos"))))
                     .Then(Literal("as")
-                        .Then(Argument("player", PlayerArgumentType.Player)
-                            .Fork(execute, ctx => new List<CommandSource>(new []{ctx.Source.WithPosition(ctx.GetArgument<Player>("player").Center)})))))));
+                        .Then(Argument("player", EntityArgumentType.Player)
+                            .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center)).ToList()))))));
     }
     
     private static LiteralArgumentBuilder<CommandSource> AddConditionArguments(CommandNode<CommandSource> root, LiteralArgumentBuilder<CommandSource> argumentBuilder, bool positive)
