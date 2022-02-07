@@ -1,5 +1,8 @@
-﻿using Brigadier.NET;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Brigadier.NET;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Misc;
 using Terraria;
 using Terraria.ModLoader;
@@ -21,15 +24,18 @@ public class SpawnCommand : Command
                 Reply(ctx, "You have been sent to spawn.");
                 return 1;
             })
-            .Then(Argument("player", PlayerArgumentType.Player)
+            .Then(Argument("players", EntityArgumentType.Players)
                 .Executes(ctx =>
                 {
-                    Player player = ctx.GetArgument<Player>("player");
-                    
-                    player.Spawn(PlayerSpawnContext.RecallFromItem);
-                    Reply(player, "You have been sent to spawn.");
-                    
-                    Reply(ctx, $"{player.name} has been sent to spawn.");
+                    IEnumerable<Player> players = EntityArgumentType.GetPlayers(ctx, "players").ToList();
+
+                    foreach (Player player in players)
+                    {
+                        player.Spawn(PlayerSpawnContext.RecallFromItem);
+                        Reply(player, "You have been sent to spawn.");
+                    }
+
+                    Reply(ctx, $"{(players.Count() == 1 ? Coloured(players.First().name) + " has" : Coloured(players.Count() + " players") + " have")} been sent to spawn.");
                     return 1;
                 })));
     }
