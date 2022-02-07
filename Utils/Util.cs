@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Design;
 using MoreCommands.IL;
 using MoreCommands.IL.Detours;
 using MoreCommands.Misc;
-using Newtonsoft.Json;
 using Terraria;
 using Terraria.Audio;
 using Terraria.Chat;
@@ -298,4 +294,14 @@ public static class Util
         Random random = seed is null ? Random : new Random(seed.Value);
         return ColorFromHSV(random.Next(0, 256), random.NextDouble() * .5 + .25, .9);
     }
+
+    public static T Make<T>(T t, Action<T> action)
+    {
+        action(t);
+        return t;
+    }
+
+    public static IEnumerable<T> Singleton<T>(T value) => Enumerable.Repeat(value, 1);
+
+    public static IEnumerable<string> QuoteIfHasSpaces(IEnumerable<string> enumerable) => enumerable.Select(s => s.Contains(' ') ? $"\"{s}\"" : s);
 }

@@ -13,7 +13,7 @@ internal static class ILManipulator
 
     internal static void RegisterManipulations()
     {
-        foreach (Type manipulationType in typeof(ILManipulator).Assembly.GetTypesIncludingNested()
+        foreach (Type manipulationType in typeof(ILManipulator).Assembly.GetTypes()
                      .Where(type => type != typeof(ILManipulation) && typeof(ILManipulation).IsAssignableFrom(type)))
         {
             ILManipulation manipulation;

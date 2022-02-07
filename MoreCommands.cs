@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Brigadier.NET;
-using Brigadier.NET.Builder;
 using Brigadier.NET.Context;
 using Brigadier.NET.Suggestion;
 using Brigadier.NET.Tree;
@@ -14,6 +13,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoMod.RuntimeDetour;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Extensions;
 using MoreCommands.Hooks;
 using MoreCommands.IL;
@@ -91,6 +91,7 @@ public class MoreCommands : Mod
 
 		ILManipulator.RegisterManipulations();
 		LangHelper.LoadEnglishLanguage();
+		EntitySelectorOptions.Register();
 		RegisterCommands();
 
 		if (!Main.dedServ)
@@ -124,7 +125,8 @@ public class MoreCommands : Mod
 	public override void PostAddRecipes()
 	{
 		IdHelper.Init();
-		
+		EntitySelectorOptions.RegisterTagGroups();
+
 		Dictionary<LocalizedText, ChatCommandId> localizedCommands = GetLocalizedCommands(ChatManager.Commands);
 		foreach (LocalizedText name in from KeyValuePair<ChatCommandId, IChatCommand> pair in GetVanillaCommands(ChatManager.Commands)
 		         select localizedCommands.Select(pair0 => (KeyValuePair<LocalizedText, ChatCommandId>?) pair0)
@@ -233,7 +235,7 @@ public class MoreCommands : Mod
 	{
 		IDictionary<string, List<ModCommand>> commands = Util.GetCommands();
 
-		IEnumerable<Command> commandsToRegister = Assembly.GetAssembly(typeof(MoreCommands))?.GetTypesIncludingNested()
+		IEnumerable<Command> commandsToRegister = Assembly.GetAssembly(typeof(MoreCommands))?.GetTypes()
 			.Where(t => !t.IsAbstract && typeof(Command).IsAssignableFrom(t))
 			.Select(type =>
 			{

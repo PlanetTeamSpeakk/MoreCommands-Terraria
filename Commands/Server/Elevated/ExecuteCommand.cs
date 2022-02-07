@@ -9,6 +9,7 @@ using Brigadier.NET.Exceptions;
 using Brigadier.NET.Tree;
 using Microsoft.Xna.Framework;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
 using MoreCommands.Misc;
 using MoreCommands.Utils;
 using Terraria;
@@ -100,9 +101,9 @@ public class ExecuteCommand : Command
                             .Then(AddBlocksConditionLogic(root, Literal("all"), positive, false))
                             .Then(AddBlocksConditionLogic(root, Literal("masked"), positive, true))))))
             .Then(Literal("npcs")
-                .Then(Argument("npcs", NpcSelectorArgumentType.NpcSelector)
-                    .Fork(root, ctx => GetSourceOrEmptyForConditionFork(ctx, positive, ctx.GetArgument<IEnumerable<NPC>>("npcs").Any()))
-                    .Executes(GetExistsConditionExecute(positive, ctx => ctx.GetArgument<IEnumerable<NPC>>("npcs").Count()))));
+                .Then(Argument("npcs", EntityArgumentType.Entities)
+                    .Fork(root, ctx => GetSourceOrEmptyForConditionFork(ctx, positive, EntityArgumentType.GetEntities(ctx, "npcs").Any()))
+                    .Executes(GetExistsConditionExecute(positive, ctx => EntityArgumentType.GetEntities(ctx, "npcs").Count))));
         
         return argumentBuilder;
     }

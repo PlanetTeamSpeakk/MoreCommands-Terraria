@@ -40,7 +40,7 @@ public class PlayerArgumentType : ArgumentType<Player>
 
         foreach ((string suggestion, Player player) in Main.player
                      .Where(p => p.name.ToLower().StartsWith(input))
-                     .Select(p => (string.Format(p.name.Contains(" ") ? "\"{0}\"" : "{0}", p.name), p)))
+                     .Select(p => (string.Format(p.name.Contains(' ') ? "\"{0}\"" : "{0}", p.name), p)))
             builder.Suggest(suggestion, new LiteralMessage(player.name));
 
         return builder.BuildFuture();

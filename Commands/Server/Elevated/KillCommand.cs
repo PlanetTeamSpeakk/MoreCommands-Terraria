@@ -1,6 +1,10 @@
-﻿using Brigadier.NET;
+﻿using System.Collections.Generic;
+using Brigadier.NET;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
+using MoreCommands.Extensions;
 using MoreCommands.Misc;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace MoreCommands.Commands.Server.Elevated;
@@ -13,12 +17,15 @@ public class KillCommand : Command
     public override void Register(CommandDispatcher<CommandSource> dispatcher)
     {
         dispatcher.Register(RootLiteralReq("kill")
-            .Then(Argument("npcs", NpcSelectorArgumentType.NpcSelector)
+            .Executes(ctx => dispatcher.GetRoot().GetChild("suicide").Command(ctx))
+            .Then(Argument("entities", EntityArgumentType.Entities)
                 .Executes(ctx =>
                 {
-                    // TODO
-                    Reply(ctx, "Test");
-                    return 1;
+                    List<Entity> entities = EntityArgumentType.GetEntities(ctx, "entities");
+                    entities.ForEach(entity => entity.Kill());
+                    
+                    Reply(ctx, $"Successfully killed {Coloured(entities.Count)} entities.");
+                    return entities.Count;
                 })));
     }
 }
