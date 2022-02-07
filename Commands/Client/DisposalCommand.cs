@@ -14,7 +14,7 @@ public class DisposalCommand : Command
         dispatcher.Register(RootLiteral("disposal")
             .Executes(_ =>
             {
-                if (MoreCommands.DisposalInterface.CurrentState == null)
+                if (MoreCommands.DisposalInterface.CurrentState is null)
                     MoreCommands.DisposalInterface.SetState(MoreCommands.DisposalUI);
                 else MoreCommands.DisposalUI.Close();
 

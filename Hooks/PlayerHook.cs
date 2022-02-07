@@ -28,5 +28,5 @@ public class PlayerHook : ModPlayer
     }
 
     public override bool ShiftClickSlot(Item[] inventory, int context, int slot) => 
-        MoreCommands.DisposalInterface.CurrentState != null && MoreCommands.DisposalUI.OnShiftClick(inventory, slot);
+        MoreCommands.DisposalInterface.CurrentState is not null && MoreCommands.DisposalUI.OnShiftClick(inventory, slot);
 }

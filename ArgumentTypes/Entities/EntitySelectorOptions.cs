@@ -56,7 +56,7 @@ public static class EntitySelectorOptions
             int cursor = reader.Reader.Cursor;
             FloatRange floatRange = FloatRange.Parse(reader.Reader);
 
-            if (floatRange.From != null && floatRange.From < 0.0 || floatRange.To != null && floatRange.To < 0.0)
+            if (floatRange.From is not null && floatRange.From < 0.0 || floatRange.To is not null && floatRange.To < 0.0)
             {
                 reader.Reader.Cursor = cursor;
                 throw NegativeDistanceException.CreateWithContext(reader.Reader);
@@ -65,10 +65,10 @@ public static class EntitySelectorOptions
             reader.Distance = floatRange;
         }, reader => reader.Distance.From is null && reader.Distance.To is null, "Distance to entity");
 
-        PutOption("x", reader => reader.X = reader.Reader.ReadFloat(), reader => reader.X == null, "X position");
-        PutOption("y", reader => reader.Y = reader.Reader.ReadFloat(), reader => reader.Y == null, "Y position");
-        PutOption("dx", reader => reader.Dx = reader.Reader.ReadFloat(), reader => reader.Dx == null, "Between x and x + dx");
-        PutOption("dy", reader => reader.Dy = reader.Reader.ReadFloat(), reader => reader.Dy == null, "Between y and y + dy");
+        PutOption("x", reader => reader.X = reader.Reader.ReadFloat(), reader => reader.X is null, "X position");
+        PutOption("y", reader => reader.Y = reader.Reader.ReadFloat(), reader => reader.Y is null, "Y position");
+        PutOption("dx", reader => reader.Dx = reader.Reader.ReadFloat(), reader => reader.Dx is null, "Between x and x + dx");
+        PutOption("dy", reader => reader.Dy = reader.Reader.ReadFloat(), reader => reader.Dy is null, "Between y and y + dy");
         
         PutOption("limit", reader =>
         {
@@ -251,7 +251,7 @@ public static class EntitySelectorOptions
     public static SelectorHandler GetHandler(EntitySelectorReader reader, string option, int restoreCursor)
     {
         SelectorOption selectorOption = Options.ContainsKey(option) ? Options[option] : null;
-        if (selectorOption != null)
+        if (selectorOption is not null)
         {
             if (selectorOption.Condition(reader))
                 return selectorOption.Handler;

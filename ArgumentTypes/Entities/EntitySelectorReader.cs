@@ -68,7 +68,7 @@ public class EntitySelectorReader
 
     public EntitySelector Build()
     {
-        Func<Vector2, Vector2> positionOffset = X == null && Y == null ? pos => pos : pos => new Vector2(X ?? pos.X, Y ?? pos.Y);
+        Func<Vector2, Vector2> positionOffset = X is null && Y is null ? pos => pos : pos => new Vector2(X ?? pos.X, Y ?? pos.Y);
         return new EntitySelector(Limit, IncludesNonPlayers, _predicate, Distance, positionOffset, Sorter, _senderOnly, _playerName, UsesAt);
     }
     

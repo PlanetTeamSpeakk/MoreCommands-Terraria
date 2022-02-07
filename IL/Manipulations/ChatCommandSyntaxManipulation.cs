@@ -236,7 +236,7 @@ public class ChatCommandSyntaxManipulation : ILManipulation
                 {
                     ParsedCommandNode<CommandSource> node = results!.Context.Nodes[i];
                     
-                    if (lastRange != null && lastRange.Value.End != node.Range.Start)
+                    if (lastRange is not null && lastRange.Value.End != node.Range.Start)
                         snippets.Add(new TextSnippet(StringRange.Between(lastRange.Value.End, node.Range.Start).Get(text)));
                     lastRange = node.Range;
 
@@ -254,7 +254,7 @@ public class ChatCommandSyntaxManipulation : ILManipulation
                         })));
                 }
 
-                if (lastRange != null && lastRange.Value.End != text.Length)
+                if (lastRange is not null && lastRange.Value.End != text.Length)
                     snippets.Add(new TextSnippet(text[lastRange.Value.End..], Color.Red));
 
                 lastSnippets = snippets.ToImmutableList();

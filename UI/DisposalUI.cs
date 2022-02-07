@@ -71,13 +71,13 @@ public class DisposalUI : UIState
     {
         if (_slots.Any(itemSlot => itemSlot.CheckInv(inventory))) // Shift-clicking on slot in the disposal, attempt to move back to inv.
         {
-            if (!Main.LocalPlayer.inventory.Any(item => item == null || item.type == ItemID.None))
+            if (!Main.LocalPlayer.inventory.Any(item => item is null || item.type == ItemID.None))
                 return false; // No empty slot, just set the item to the cursor item.
 
             for (int i = 0; i < Main.LocalPlayer.inventory.Length; i++)
             {
                 Item item = Main.LocalPlayer.inventory[i];
-                if (item != null && item.type != ItemID.None) continue;
+                if (item is not null && item.type != ItemID.None) continue;
                 
                 Main.LocalPlayer.inventory[i] = inventory[slot];
                 inventory[slot] = new Item();
@@ -90,7 +90,7 @@ public class DisposalUI : UIState
         }
         
         UIItemSlotWrapper itemSlot = _slots.FirstOrDefault(itemSlot => itemSlot.IsEmpty);
-        if (itemSlot == null) return false;
+        if (itemSlot is null) return false;
 
         itemSlot.SetItem(inventory[slot]);
         inventory[slot] = new Item();

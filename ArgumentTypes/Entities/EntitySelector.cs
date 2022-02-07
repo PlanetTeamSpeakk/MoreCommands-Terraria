@@ -68,10 +68,10 @@ public class EntitySelector
         if (!IncludesNonPlayers)
             return GetPlayers(source).Select(player => (Entity) player).ToList();
 
-        if (_playerName != null)
+        if (_playerName is not null)
         {
             Player player = Main.player.FirstOrDefault(player => player.name.Equals(_playerName, StringComparison.OrdinalIgnoreCase));
-            return player == null ? new List<Entity>() : Util.Singleton((Entity) player).ToList();
+            return player is null ? new List<Entity>() : Util.Singleton((Entity) player).ToList();
         }
 
         Vector2 posOffset = _positionOffset(source.Pos);
@@ -101,10 +101,10 @@ public class EntitySelector
     {
         CheckSourcePermission(source);
 
-        if (_playerName != null)
+        if (_playerName is not null)
         {
             Player player = Main.player.FirstOrDefault(player => player.name == _playerName);
-            return player == null ? new List<Player>() : Util.Singleton(player).ToList();
+            return player is null ? new List<Player>() : Util.Singleton(player).ToList();
         }
 
         Vector2 posOffset = _positionOffset(source.Pos);
@@ -120,7 +120,7 @@ public class EntitySelector
     private Predicate<Entity> GetPositionPredicate(Vector2 pos)
     {
         Predicate<Entity> predicate = _basePredicate;
-        if (_distance.From == null && _distance.To == null) return predicate;
+        if (_distance.From is null && _distance.To is null) return predicate;
         
         Predicate<Entity> old = predicate;
         predicate = entity => old(entity) && (_distance.From * 16 ?? 0) <= entity.Distance(pos) && (_distance.To * 16 ?? float.MaxValue) >= entity.Distance(pos);

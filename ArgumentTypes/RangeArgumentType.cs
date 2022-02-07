@@ -38,12 +38,12 @@ public struct FloatRange
                 reader.Skip();
                 
                 max = FromStringReader(reader);
-                if (min == null && max == null) 
+                if (min is null && max is null) 
                     throw Empty.CreateWithContext(reader);
             }
             else max = min;
             
-            if (min == null && max == null) 
+            if (min is null && max is null) 
                 throw Empty.CreateWithContext(reader);
             
             return new FloatRange

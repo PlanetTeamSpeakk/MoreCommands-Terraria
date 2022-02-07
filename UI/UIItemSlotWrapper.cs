@@ -11,7 +11,7 @@ namespace MoreCommands.UI;
 
 public class UIItemSlotWrapper : UIElement
 {
-    public bool IsEmpty => _item == null || _item.type == ItemID.None;
+    public bool IsEmpty => _item is null || _item.type == ItemID.None;
     private Item _item;
     private Item[] _inv;
     private readonly int _context;
