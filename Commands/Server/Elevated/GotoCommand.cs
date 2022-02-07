@@ -75,56 +75,56 @@ public class GotoCommand : Command
 
     private static (int x, int y)? GetHellPos(Player player)
     {
-	    int findTeleportDestinationAttempts = 0;
-		int width = player.width;
-		int height = player.height;
+        int findTeleportDestinationAttempts = 0;
+        int width = player.width;
+        int height = player.height;
 
-		while (findTeleportDestinationAttempts++ < 1000)
-		{
-			int tileX = Main.rand.Next(Main.maxTilesX - 200);
-			int tileY = Main.rand.Next(Main.maxTilesY - 200, Main.maxTilesY);
-			Vector2 teleportPosition = new Vector2(tileX, tileY) * 16f + new Vector2((float)(-width / 2.0 + 8.0), -height);
-			
-			if (Collision.SolidCollision(teleportPosition, width, height)) continue;
-			Main.tile[tileX, tileY] ??= new Tile();
+        while (findTeleportDestinationAttempts++ < 1000)
+        {
+            int tileX = Main.rand.Next(Main.maxTilesX - 200);
+            int tileY = Main.rand.Next(Main.maxTilesY - 200, Main.maxTilesY);
+            Vector2 teleportPosition = new Vector2(tileX, tileY) * 16f + new Vector2((float)(-width / 2.0 + 8.0), -height);
+            
+            if (Collision.SolidCollision(teleportPosition, width, height)) continue;
+            Main.tile[tileX, tileY] ??= new Tile();
 
-			if (Main.tile[tileX, tileY].wall == 87 && !(tileY <= Main.worldSurface) && !NPC.downedPlantBoss || 
-			    Main.wallDungeon[Main.tile[tileX, tileY].wall] && !(tileY <= Main.worldSurface) && !NPC.downedBoss3) continue;
-			
-			int num4 = 0;
-			while (num4 < 100 && WorldGen.InWorld(tileX, tileY + num4, 20))
-			{
-				Main.tile[tileX, tileY + num4] ??= new Tile();
-				Tile tile = Main.tile[tileX, tileY + num4];
-				teleportPosition = new Vector2(tileX, tileY + num4) * 16f + new Vector2((float)(-(double)width / 2.0 + 8.0), -height);
-				Collision.SlopeCollision(teleportPosition, player.velocity, width, height, player.gravDir);
-				bool flag2 = !Collision.SolidCollision(teleportPosition, width, height);
-						
-				if (flag2 || !tile.IsActive || !Main.tileSolid[tile.type]) ++num4;
-				else break;
-			}
+            if (Main.tile[tileX, tileY].wall == 87 && !(tileY <= Main.worldSurface) && !NPC.downedPlantBoss || 
+                Main.wallDungeon[Main.tile[tileX, tileY].wall] && !(tileY <= Main.worldSurface) && !NPC.downedBoss3) continue;
+            
+            int num4 = 0;
+            while (num4 < 100 && WorldGen.InWorld(tileX, tileY + num4, 20))
+            {
+                Main.tile[tileX, tileY + num4] ??= new Tile();
+                Tile tile = Main.tile[tileX, tileY + num4];
+                teleportPosition = new Vector2(tileX, tileY + num4) * 16f + new Vector2((float)(-(double)width / 2.0 + 8.0), -height);
+                Collision.SlopeCollision(teleportPosition, player.velocity, width, height, player.gravDir);
+                bool flag2 = !Collision.SolidCollision(teleportPosition, width, height);
+                        
+                if (flag2 || !tile.IsActive || !Main.tileSolid[tile.type]) ++num4;
+                else break;
+            }
 
-			if (Collision.LavaCollision(teleportPosition, width, height) || !(Collision.HurtTiles(teleportPosition, player.velocity, width, height).Y <= 0.0)) continue;
-			Collision.SlopeCollision(teleportPosition, player.velocity, width, height, player.gravDir);
+            if (Collision.LavaCollision(teleportPosition, width, height) || !(Collision.HurtTiles(teleportPosition, player.velocity, width, height).Y <= 0.0)) continue;
+            Collision.SlopeCollision(teleportPosition, player.velocity, width, height, player.gravDir);
 
-			if (!Collision.SolidCollision(teleportPosition, width, height) || num4 >= 99) continue;
-			Vector2 velocity1 = Vector2.UnitX * 16f;
+            if (!Collision.SolidCollision(teleportPosition, width, height) || num4 >= 99) continue;
+            Vector2 velocity1 = Vector2.UnitX * 16f;
 
-			if (Collision.TileCollision(teleportPosition - velocity1, velocity1, width, height, false, false, (int)player.gravDir) != velocity1) continue;
-			Vector2 velocity2 = -Vector2.UnitX * 16f;
+            if (Collision.TileCollision(teleportPosition - velocity1, velocity1, width, height, false, false, (int)player.gravDir) != velocity1) continue;
+            Vector2 velocity2 = -Vector2.UnitX * 16f;
 
-			if (Collision.TileCollision(teleportPosition - velocity2, velocity2, width, height, false, false, (int)player.gravDir) != velocity2) continue;
-			Vector2 velocity3 = Vector2.UnitY * 16f;
+            if (Collision.TileCollision(teleportPosition - velocity2, velocity2, width, height, false, false, (int)player.gravDir) != velocity2) continue;
+            Vector2 velocity3 = Vector2.UnitY * 16f;
 
-			if (Collision.TileCollision(teleportPosition - velocity3, velocity3, width, height, false, false, (int)player.gravDir) != velocity3) continue;
-			Vector2 velocity4 = -Vector2.UnitY * 16f;
+            if (Collision.TileCollision(teleportPosition - velocity3, velocity3, width, height, false, false, (int)player.gravDir) != velocity3) continue;
+            Vector2 velocity4 = -Vector2.UnitY * 16f;
 
-			if (Collision.TileCollision(teleportPosition - velocity4, velocity4, width, height, false, false, (int)player.gravDir) != velocity4) continue;
+            if (Collision.TileCollision(teleportPosition - velocity4, velocity4, width, height, false, false, (int)player.gravDir) != velocity4) continue;
 
-			return ((int) teleportPosition.X, (int) teleportPosition.Y);
-		}
+            return ((int) teleportPosition.X, (int) teleportPosition.Y);
+        }
 
-		return null;
+        return null;
     }
 
     private static (int x, int y)? GetRandomPos(Player player)

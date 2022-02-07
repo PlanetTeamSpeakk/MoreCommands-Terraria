@@ -41,9 +41,9 @@ float4 RainbowScreen(float2 coords : TEXCOORD0) : COLOR0
     if (uProgress == 0)
         return c;
 
-	float ratio = uScreenResolution.x / uScreenResolution.y;
-	float distance = sqrt(pow((coords.x - uTargetPosition.x) * ratio, 2) + pow(coords.y - uTargetPosition.y, 2));
-	float hue = distance * 2 + (1.0 - frac(uTime)) * 2;
+    float ratio = uScreenResolution.x / uScreenResolution.y;
+    float distance = sqrt(pow((coords.x - uTargetPosition.x) * ratio, 2) + pow(coords.y - uTargetPosition.y, 2));
+    float hue = distance * 2 + (1.0 - frac(uTime)) * 2;
     float3 cNew = hsv2rgb(float3(frac(hue), 0.75, 0.85));
     
     float edgeDistance = rt2 - distance; // x and y can be 1.0 at most sqrt(1.0^2 + 1.0^2) = sqrt(2);
