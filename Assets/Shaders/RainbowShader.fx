@@ -57,7 +57,8 @@ float4 RainbowScreen(float2 coords : TEXCOORD0) : COLOR0
 }
 
 technique Rainbow
-{    pass RainbowScreen
+{
+    pass RainbowScreen
     {
         PixelShader = compile ps_2_0 RainbowScreen();
     }
