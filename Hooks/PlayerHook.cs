@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using MoreCommands.Misc;
+using Terraria;
 using Terraria.Audio;
 using Terraria.GameInput;
 using Terraria.ID;
@@ -22,7 +23,7 @@ public class PlayerHook : ModPlayer
         if (Main.netMode != NetmodeID.Server || toWho != -1 || Netplay.Clients[fromWho].State != 10 || !MoreCommands.IsOp(fromWho)) return;
         // Player just joined and is op.
         ModPacket packet = MoreCommands.Instance.GetPacket();
-        packet.Write((byte) 0);
+        packet.Write((byte) MCPacketID.S2C.OperatorPacket);
         packet.Write(true);
         packet.Send(fromWho);
     }

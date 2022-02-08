@@ -177,7 +177,7 @@ public class MoreCommands : Mod
         {
             // C2S PACKETS
             
-            case 0: // Suggestions request packet
+            case (byte) MCPacketID.C2S.SuggestionsRequest: // Suggestions request packet
                 uint requestId = reader.ReadUInt32();
                 string text = reader.ReadString();
                 CommandSource source = new(new ServerPlayerCommandCaller(Main.player[whoAmI]));
@@ -188,7 +188,7 @@ public class MoreCommands : Mod
                         Suggestions suggestions = task.Result;
                         ModPacket packet = GetPacket();
                         
-                        packet.Write((byte) 1);
+                        packet.Write((byte) MCPacketID.S2C.SuggestionsSend);
                         packet.Write(requestId);
                         packet.Write(suggestions.Range.Start);
                         packet.Write(suggestions.Range.End);
@@ -208,10 +208,10 @@ public class MoreCommands : Mod
         {
             // S2C PACKETS
             
-            case 0: // Operator packet, only received when we're op(ped) or deopped.
+            case (byte) MCPacketID.S2C.OperatorPacket: // Operator packet, only received when we're op(ped) or deopped.
                 IsClientOp = reader.ReadBoolean();
                 break;
-            case 1: // Suggestions receive packet
+            case (byte) MCPacketID.S2C.SuggestionsSend: // Suggestions receive packet
                 uint requestId = reader.ReadUInt32();
                 StringRange range = StringRange.Between(reader.ReadInt32(), reader.ReadInt32());
                 int count = reader.ReadInt32();
@@ -300,7 +300,7 @@ public class MoreCommands : Mod
                 if (Main.netMode == NetmodeID.MultiplayerClient)
                 {
                     ModPacket packet = Instance.GetPacket();
-                    packet.Write((byte) 0); // Suggestions request packet.
+                    packet.Write((byte) MCPacketID.C2S.SuggestionsRequest); // Suggestions request packet.
                     packet.Write(requestId);
                     packet.Write(Main.chatText[1..]);
                     packet.Send();

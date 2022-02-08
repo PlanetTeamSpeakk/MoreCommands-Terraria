@@ -99,7 +99,7 @@ public class SystemHooks : ModSystem
     private static void SendOpPacket(int player, bool isOp)
     {
         ModPacket packet = MoreCommands.Instance.GetPacket();
-        packet.Write((byte) 0);
+        packet.Write((byte) MCPacketID.S2C.OperatorPacket);
         packet.Write(isOp);
         packet.Send(player);
     }
