@@ -1,1 +1,48 @@
-Adds lots of commands to your Terraria world.
+Adds 30+ of commands to your Terraria world, command syntax highlighting in chat, command tiles, argument suggestions, macros, command keybinds, map teleportation, sudo, chat styling (hovers and clicks) and much more.
+
+To teleport anywhere on the map, hold ctrl and click where you'd like to go.
+To use chat styling, use the following pattern in a message:
+[styled:{"text":"Your text here.","color":"#ffaa00","underline":true,"hover":"This text will display when hovering over it","click":{"action":"runcommand","value":"/give dirt_block"}}]
+Only the text key is required, the rest are optional.
+
+Client commands:
+/bind Send messages or commands when pressing a key on your keyboard.
+/calc Evaluate a math expression.
+/clear Clears your inventory, including coins and ammo.
+/csilent Run a command silently on the client.
+/disposal A handy mobile chest that destroys everything you put into it.
+/itemid Gives the id of the item you're holding or the item passed.
+/jump Teleport where your cursor is.
+/legacy List all legacy commands (from vanilla Terraria and other mods)
+/macro Manage or run macros. (Group of commands)
+/revealmap Reveals the entire map on singleplayer.
+/urban Lookup words on Urban Dictionary.
+/whereami Tells you where in the world you are.
+
+The following commands require that you are either opped (see /op), or have enabled cheats in the config on singleplayer.
+Elevated server commands:
+/broadcast Send a chat message.
+/buff Manipulate your (de)buffs.
+/execute Execute commands as other people.
+/give Gives an item.
+/goto Teleport to various locations in the world quickly.
+/heal Magically replenishes your health and mana.
+/invasion Starts an invasion.
+/kill Kill anything and everything you wish.
+/npcblacklist Prevent certain types of NPCs from spawning in your world.
+/op Assign or withdraw operator status to or from players.
+/seed Gives the seed of the world.
+/settile Set a tile somewhere in the world.
+/summon Summon NPCs
+/teleport Teleport anywhere in the world.
+/weather Manipulate the weather to your will.
+/wipeout Kill every NPC in the world, excluding townfolk.
+
+The following commands do not require any permissions and can be ran by anyone.
+Unelevated server commands:
+/dropstore Clears your inventory and stores its contents in a chest at your feet.
+/modifier Set (op-only) or get the modifier of the item you're holding.
+/silent Run a command silently.
+/spawn Send yourself or someone else (op-only) to spawn.
+/suicide Kill yourself for whatever reason.
+/time Get or set (op-only) the time of the world.
