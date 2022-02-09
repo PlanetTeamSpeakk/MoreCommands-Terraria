@@ -60,12 +60,13 @@ public class BuffCommand : Command
         IEnumerable<Player> toClear = (players ?? Util.Singleton(ctx.Source.Player)).ToList();
 
         foreach (Player player in toClear)
+        {
             for (int i = 0; i < Player.MaxBuffs; i++)
-            {
                 player.DelBuff(i);
-                Reply(player, "Your buffs have been cleared.");
-            }
-        
+            
+            Reply(player, "Your buffs have been cleared.");
+        }
+
         if (!ctx.Source.IsPlayer || !toClear.Contains(ctx.Source.Player))
             Reply(ctx, $"{Coloured(toClear.Count() == 1 ? toClear.First().name + " has" : toClear.Count() + " players have")}'s buffs have been cleared.");
 
