@@ -14,6 +14,7 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Keys.snk</AssemblyOriginatorKeyFile>
     <PublicSign>true</PublicSign>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Antlr4.Runtime" Version="4.6.6" />

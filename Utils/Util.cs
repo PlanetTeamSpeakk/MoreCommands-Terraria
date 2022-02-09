@@ -182,8 +182,8 @@ public static class Util
         if (type == TileID.Saplings)
         {
             Tile tile = Main.tile[x, y];
-            if (tile.IsActive)
-                TileLoader.SaplingGrowthType(tile.type, ref type, ref style);
+            if (tile.HasTile)
+                TileLoader.SaplingGrowthType(tile.TileType, ref type, ref style);
         }
 
         if (tileData.RandomStyleRange > 0)

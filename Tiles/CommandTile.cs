@@ -1,10 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using MoreCommands.Utils;
+﻿using MoreCommands.Utils;
 using Terraria;
-using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ObjectData;
 
@@ -72,7 +69,7 @@ public class CommandTile : ModTile
     private static (int x, int y) GetTopLeftCorner(int x, int y)
     {
         Tile tile = Framing.GetTileSafely(x, y);
-        return (x - tile.frameX / 18, y - tile.frameY / 18);
+        return (x - tile.TileFrameX / 18, y - tile.TileFrameY / 18);
     }
 
     public class CommandTileItem : ModItem

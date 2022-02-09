@@ -62,7 +62,7 @@ public class ExecuteCommand : Command
             .Then(Literal("tile")
                 .Then(Argument("pos", PositionArgumentType.TilePos)
                     .Then(AddConditionLogic(root, Argument("tile", IdArgumentType.Tile), positive, 
-                        ctx => Framing.GetTileSafely(PositionArgumentType.GetPositionVec(ctx, "pos"))?.type == ctx.GetArgument<int>("tile")))))
+                        ctx => Framing.GetTileSafely(PositionArgumentType.GetPositionVec(ctx, "pos")).TileType == ctx.GetArgument<int>("tile")))))
             // .Then(Literal("score") // TODO add scoreboard
             //     .Then(Argument("target", ScoreHolderArgumentType.scoreHolder())
             //         .Suggests(ScoreHolderArgumentType.SUGGESTION_PROVIDER)
@@ -148,8 +148,8 @@ public class ExecuteCommand : Command
             Vector2 pos2 = new(x, y);
             Vector2 pos3 = pos2 + pos;
             
-            if (masked && !Main.tile[x, y].IsActive) continue;
-            if (Main.tile[x, y].type != Main.tile[(int) pos3.X, (int) pos3.Y].type)
+            if (masked && !Main.tile[x, y].HasTile) continue;
+            if (Main.tile[x, y].TileType != Main.tile[(int) pos3.X, (int) pos3.Y].TileType)
                 return null;
             
             ++j;

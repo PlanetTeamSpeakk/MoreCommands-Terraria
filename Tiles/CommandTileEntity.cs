@@ -41,7 +41,7 @@ public class CommandTileEntity : ModTileEntity
     {
         Tile tile = Main.tile[x, y];
 
-        return tile.IsActive && tile.type == ModContent.TileType<CommandTile>();
+        return tile.HasTile && tile.TileType == ModContent.TileType<CommandTile>();
     }
 
     public override void SaveData(TagCompound tag)

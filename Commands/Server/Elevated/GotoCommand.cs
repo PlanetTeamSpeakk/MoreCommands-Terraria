@@ -60,7 +60,7 @@ public class GotoCommand : Command
         for (int x = 0; x < Main.maxTilesX; ++x)
             for (int y = 0; y < Main.maxTilesY; ++y)
             {
-                if (Main.tile[x, y] is null || Main.tile[x, y].type != TileID.LihzahrdAltar) continue;
+                if (Main.tile[x, y].TileType != TileID.LihzahrdAltar) continue;
                                 
                 pos = new Vector2((x + 2) * 16, y * 16);
                 break;
@@ -86,21 +86,19 @@ public class GotoCommand : Command
             Vector2 teleportPosition = new Vector2(tileX, tileY) * 16f + new Vector2((float)(-width / 2.0 + 8.0), -height);
             
             if (Collision.SolidCollision(teleportPosition, width, height)) continue;
-            Main.tile[tileX, tileY] ??= new Tile();
 
-            if (Main.tile[tileX, tileY].wall == 87 && !(tileY <= Main.worldSurface) && !NPC.downedPlantBoss || 
-                Main.wallDungeon[Main.tile[tileX, tileY].wall] && !(tileY <= Main.worldSurface) && !NPC.downedBoss3) continue;
+            if (Main.tile[tileX, tileY].WallType == 87 && !(tileY <= Main.worldSurface) && !NPC.downedPlantBoss || 
+                Main.wallDungeon[Main.tile[tileX, tileY].WallType] && !(tileY <= Main.worldSurface) && !NPC.downedBoss3) continue;
             
             int num4 = 0;
             while (num4 < 100 && WorldGen.InWorld(tileX, tileY + num4, 20))
             {
-                Main.tile[tileX, tileY + num4] ??= new Tile();
                 Tile tile = Main.tile[tileX, tileY + num4];
                 teleportPosition = new Vector2(tileX, tileY + num4) * 16f + new Vector2((float)(-(double)width / 2.0 + 8.0), -height);
                 Collision.SlopeCollision(teleportPosition, player.velocity, width, height, player.gravDir);
                 bool flag2 = !Collision.SolidCollision(teleportPosition, width, height);
                         
-                if (flag2 || !tile.IsActive || !Main.tileSolid[tile.type]) ++num4;
+                if (flag2 || !tile.HasTile || !Main.tileSolid[tile.TileType]) ++num4;
                 else break;
             }
 
