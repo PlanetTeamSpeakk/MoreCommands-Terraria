@@ -27,6 +27,7 @@ public class CleanseCommand : Command
         [Ebonstone] = TileID.Stone,
         [Ebonsand] = Sand,
         [CorruptIce] = IceBlock,
+        [CorruptThorns] = None,
         [TileID.CorruptHardenedSand] = TileID.HardenedSand,
         [TileID.CorruptSandstone] = TileID.Sandstone,
 
@@ -36,6 +37,7 @@ public class CleanseCommand : Command
         [Crimsand] = Sand,
         [FleshIce] = IceBlock,
         [CrimsonVines] = Vines,
+        [CrimsonThorns] = None,
         [TileID.CrimsonHardenedSand] = TileID.HardenedSand,
         [TileID.CrimsonSandstone] = TileID.Sandstone
     }.ToImmutableDictionary();
@@ -111,6 +113,9 @@ public class CleanseCommand : Command
             if (tileBlacklist.ContainsKey(tile.TileType))
             {
                 tile.TileType = tileBlacklist[tile.TileType];
+                if (tile.TileType == None)
+                    tile.HasTile = false;
+                
                 count++;
                 incrementedCount = true;
             }
