@@ -68,7 +68,7 @@ public class PositionArgumentType : ArgumentType<PositionArgumentType.PositionAr
     {
         private static readonly SimpleCommandExceptionType Negative = new(new LiteralMessage("Coordinates cannot be negative."));
         
-        public float ToAbsoluteValue(float offset) => Relative ? offset + Value * (TilePos ? 16 : 1) : Value * (TilePos ? 16 : 1);
+        public float ToAbsoluteValue(float offset) => Relative ? offset / (TilePos ? 16 : 1) + Value * (TilePos ? 16 : 1) : Value * (TilePos ? 16 : 1);
 
         public static CoordinateArgument Parse(IStringReader reader, bool tilePos)
         {
