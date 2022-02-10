@@ -12,6 +12,7 @@ public class CommandSource
     public bool IsPlayer => Caller.Player is not null;
     public Player Player => IsPlayer ? Caller.Player : throw MCBuiltInExceptions.BePlayer.Create();
     public Vector2 Pos { get; }
+    public Vector2 TilePos => Pos / 16;
     public bool IsOp { get; }
     public bool IsSilent { get; }
 
