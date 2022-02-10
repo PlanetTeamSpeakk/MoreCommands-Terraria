@@ -100,8 +100,6 @@ public class CleanseCommand : Command
         int xMax = radius is null ? Main.tile.Width : (int) center.X + radius.Value;
         int yMax = radius is null ? Main.tile.Height : (int) center.Y + radius.Value;
         
-        MoreCommands.Log.Debug($"x min: {xMin}, x max: {xMax}, y min: {yMin}, y max: {yMax}");
-        
         for (int x = xMin; x < xMax; x++)
         for (int y = yMin; y < yMax; y++)
         {
