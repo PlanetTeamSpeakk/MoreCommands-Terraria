@@ -23,6 +23,7 @@ The following commands require that you are either opped (see /op), or have enab
 Elevated server commands:
 /broadcast Send a chat message.
 /buff Manipulate your (de)buffs.
+/cleanse Cleanse the world of corruption and crimson.
 /execute Execute commands as other people.
 /give Gives an item.
 /goto Teleport to various locations in the world quickly.
