@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using Brigadier.NET;
+﻿using Brigadier.NET;
 using MoreCommands.ArgumentTypes;
+using MoreCommands.ArgumentTypes.Entities;
+using MoreCommands.Extensions;
 using MoreCommands.Misc;
 using MoreCommands.Utils;
 using Terraria;
@@ -21,11 +22,20 @@ public class TeleportCommand : Command
                 .Then(Argument("pos", PositionArgumentType.TilePos)
                     .Executes(ctx =>
                     {
-                        (float x, float y) = PositionArgumentType.GetPosition(ctx, "pos");
-                        Util.Teleport(ctx.Source.Player, ((int) x, (int) y));
-                        Reply(ctx, $"You have been teleported to {Coloured($"{(int) x / 16}", SF)}, {Coloured($"{(int) y / 16}", SF)}.");
-
+                        (int x, int y) pos = PositionArgumentType.GetPositionI(ctx, "pos");
+                        Util.Teleport(ctx.Source.Player, pos);
+                        
+                        Reply(ctx, $"You have been teleported to {Coloured(pos.x / 16)}, {Coloured(pos.y / 16)}.");
                         return 1;
-                    }))), ctx => new List<CommandSource>(new []{ctx.Source})));
+                    }))
+                .Then(Argument("target", EntityArgumentType.Entity)
+                    .Executes(ctx =>
+                    {
+                        Entity target = EntityArgumentType.GetEntity(ctx, "target");
+                        Util.Teleport(ctx.Source.Player, target.position.ToIntTuple());
+                        
+                        Reply(ctx, $"You have been teleported to {Coloured(target.GetName())}.");
+                        return 1;
+                    }))), ctx => Util.Singleton(ctx.Source)));
     }
 }
