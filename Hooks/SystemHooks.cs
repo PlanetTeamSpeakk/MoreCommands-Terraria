@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using Microsoft.Xna.Framework;
@@ -30,20 +31,20 @@ public class SystemHooks : ModSystem
     {
         int i = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text"); // Draw UIs after the cursor and related text have been drawn.
 
-        InsertLayer(layers, i, "Command Tile", MoreCommands.CommandTileInterface);
-        InsertLayer(layers, i, "Disposal", MoreCommands.DisposalInterface);
-        InsertLayer(layers, layers.Count, "Title", MoreCommands.TitleInterface);
+        InsertLayer(layers, i, "Command Tile", () => MoreCommands.CommandTileInterface);
+        InsertLayer(layers, i, "Disposal", () => MoreCommands.DisposalInterface);
+        InsertLayer(layers, layers.Count, "Title", () => MoreCommands.TitleInterface);
     }
 
-    private void InsertLayer(IList<GameInterfaceLayer> layers, int i, string name, UserInterface ui)
+    private void InsertLayer(IList<GameInterfaceLayer> layers, int i, string name, Func<UserInterface> uiSupplier)
     {
         layers.Insert(i, new LegacyGameInterfaceLayer("MoreCommands: " + name, delegate
         {
-            if (LastGameTime is not null && ui?.CurrentState is not null)
-                ui.Draw(Main.spriteBatch, LastGameTime);
+            if (LastGameTime is not null && uiSupplier()?.CurrentState is not null)
+                uiSupplier().Draw(Main.spriteBatch, LastGameTime);
 
             return true;
-        }));
+        }, InterfaceScaleType.UI));
     }
 
     public override void PostUpdateInput()
