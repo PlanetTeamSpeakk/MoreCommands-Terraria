@@ -33,4 +33,19 @@ public static class EntityExtensions
                 break;
         }
     }
+
+    public static void Damage(this Entity self, int damage, string reason = null)
+    {
+        PlayerDeathReason deathReason = reason == null ? PlayerDeathReason.LegacyDefault() : PlayerDeathReason.ByCustomReason(reason);
+        
+        switch (self)
+        {
+            case Player p:
+                p.Hurt(reason == null || !reason.Contains("{player}") ? deathReason : PlayerDeathReason.ByCustomReason(reason.Replace("{player}", p.name)), damage, 0);
+                break;
+            case NPC npc:
+                npc.StrikeNPC(damage, 0, 0);
+                break;
+        }
+    }
 }

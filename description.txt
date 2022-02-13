@@ -24,6 +24,7 @@ Elevated server commands:
 /broadcast Send a chat message.
 /buff Manipulate your (de)buffs.
 /cleanse Cleanse the world of corruption and crimson.
+/damage Damage entities. {player} in the reason will be replaced with the damaged player's name.
 /execute Execute commands as other people.
 /give Gives an item.
 /goto Teleport to various locations in the world quickly.
