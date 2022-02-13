@@ -118,6 +118,7 @@ public class MoreCommands : Mod
 
         Logging.IgnoreExceptionSource("MoreCommands");
         Logging.IgnoreExceptionSource("Brigadier.NET");
+        Logging.IgnoreExceptionContents("Brigadier.NET");
 
         CommandKeybind = KeybindLoader.RegisterKeybind(this, "Chat Command", Keys.OemQuestion);
     }
