@@ -27,7 +27,7 @@ public class HealCommand : Command
 
     private static int Execute(CommandContext<CommandSource> ctx, IEnumerable<Player> players)
     {
-        IEnumerable<Player> toHeal = (players ?? Util.Singleton(ctx.Source.Player));
+        IEnumerable<Player> toHeal = (players ?? Util.Singleton(ctx.Source.Player)).ToList();
         
         foreach (Player player in toHeal)
         {
