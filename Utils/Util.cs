@@ -168,75 +168,52 @@ public static class Util
 
     public static RemoteAddress GetAddress(int playerId) => Netplay.Clients[playerId].Socket.GetRemoteAddress();
 
-    public static void ForcePlaceTile(int x, int y, int type, int style = 0, int alternate = 0, int direction = 0)
+    public static bool ForcePlaceTile(int x, int y, int type, int style = 0, int alternate = 0)
     {
         bool customPlace = TileObjectData.CustomPlace(type, style) && type != TileID.ImmatureHerbs && type != TileID.DyePlants;
-        TileObjectData tileData = TileObjectData.GetTileData(type, style, alternate);
 
-        for (int tileX = 0; tileX < tileData.Width; tileX++)
-        for (int tileY = 0; tileY < tileData.Height; tileY++)
-            if (!WorldGen.TileEmpty(x, y)) WorldGen.KillTile(x, y, noItem: true);
-        
-        int rand = -1;
-        
-        if (type == TileID.Saplings)
+        if (customPlace)
         {
-            Tile tile = Main.tile[x, y];
-            if (tile.HasTile)
-                TileLoader.SaplingGrowthType(tile.TileType, ref type, ref style);
-        }
-
-        if (tileData.RandomStyleRange > 0)
-        {
-            TileObjectPreviewData.randomCache ??= new TileObjectPreviewData();
-            bool doRand = false;
-            if (TileObjectPreviewData.randomCache.Type == type)
-            {
-                Point16 coordinates = TileObjectPreviewData.randomCache.Coordinates;
-                Point16 objectStart = TileObjectPreviewData.randomCache.ObjectStart;
-                int objX = coordinates.X + objectStart.X;
-                int objY = coordinates.Y + objectStart.Y;
-                int tileX = x - tileData.Origin.X;
-                int tileY = y - tileData.Origin.Y;
-                if (objX != tileX || objY != tileY)
-                    doRand = true;
-            }
-            else doRand = true;
-            rand = !doRand ? TileObjectPreviewData.randomCache.Random : Main.rand.Next(tileData.RandomStyleRange);
-        }
-
-        TileObject tileObj = TileObject.Empty;
-        tileObj.xCoord = x - tileData.Origin.X;
-        tileObj.yCoord = y - tileData.Origin.Y;
-        tileObj.type = type;
-        tileObj.style = style;
-        tileObj.alternate = alternate;
-        tileObj.random = rand;
-
-        bool placed;
-        if (customPlace && false)
-        {
-            MoreCommands.Log.Debug("Tile has custom place");
+            TileObjectData tileData = TileObjectData.GetTileData(type, style);
             
-            placed = TileObject.Place(tileObj);
-            WorldGen.SquareTileFrame(x, y);
+            for (int tileX = 0; tileX < tileData.Width; tileX++)
+            for (int tileY = 0; tileY < tileData.Height; tileY++)
+                if (!WorldGen.TileEmpty(x, y)) WorldGen.KillTile(x, y, noItem: true);
+        }
+        else if (!WorldGen.TileEmpty(x, y)) WorldGen.KillTile(x, y, noItem: true);
+        
+        bool placed;
+        if (!customPlace) placed = WorldGen.PlaceTile(x, y, type, style: style, forced: true);
+        else
+        {
+            placed = TileObject.Place(new TileObject 
+            {
+                xCoord = x,
+                yCoord = y,
+                type = type,
+                style = style,
+                alternate = alternate
+            });
+            
             if (Main.netMode != NetmodeID.Server || !TileID.Sets.IsAContainer[type])
                 SoundEngine.PlaySound(SoundID.Dig, x, y);
         }
-        else placed = WorldGen.PlaceTile(x, y, type, forced: true, style: style);
-        
-        MoreCommands.Log.Debug("Placed: " + placed);
 
-        if (!placed) return;
+        if (!placed) return false;
         if (customPlace)
         {
             if (Main.netMode == NetmodeID.MultiplayerClient && !Main.tileContainer[type] && type != TileID.LogicSensor)
-                NetMessage.SendObjectPlacment(-1, x, y, type, style, alternate, rand, direction);
+                NetMessage.SendObjectPlacment(-1, x, y, type, style, 0, -1, 0);
         }
         else NetMessage.SendData(MessageID.TileManipulation, number: 1, number2: x, number3: y, number4: type, number5: style);
 
+        if (type == TileID.Containers)
+            Chest.CreateChest(x, y);
+        
         Item item = Main.item.FirstOrDefault(item => item.createTile == type);
         if (item is not null) TileLoader.PlaceInWorld(x, y, item);
+
+        return true;
     }
 
     public static void SendCommand(string cmd)

@@ -63,6 +63,12 @@ public class PositionArgumentType : ArgumentType<PositionArgumentType.PositionAr
         (float x, float y) = GetPosition(ctx, argName);
         return new Vector2(x, y);
     }
+
+    public static (int x, int y) GetPositionI(CommandContext<CommandSource> ctx, string argName)
+    {
+        (float x, float y) = GetPosition(ctx, argName);
+        return ((int) x, (int) y);
+    }
      
     public record CoordinateArgument(float Value, bool Relative, bool TilePos)
     {
