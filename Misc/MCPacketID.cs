@@ -10,6 +10,7 @@ public static class MCPacketID
     public enum S2C : byte
     {
         OperatorPacket = 0,
-        SuggestionsSend = 1
+        SuggestionsSend = 1,
+        Title = 2
     }
 }

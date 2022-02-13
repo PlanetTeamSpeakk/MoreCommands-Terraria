@@ -37,6 +37,7 @@ Elevated server commands:
 /settile Set a tile somewhere in the world.
 /summon Summon NPCs
 /teleport Teleport anywhere in the world.
+/title Send a title message to players.
 /weather Manipulate the weather to your will.
 /wipeout Kill every NPC in the world, excluding townfolk.
 

@@ -30,21 +30,20 @@ public class SystemHooks : ModSystem
     {
         int i = layers.FindIndex(layer => layer.Name == "Vanilla: Mouse Text"); // Draw UIs after the cursor and related text have been drawn.
 
-        layers.Insert(i, new LegacyGameInterfaceLayer("MoreCommands: command tile", delegate
+        InsertLayer(layers, i, "Command Tile", MoreCommands.CommandTileInterface);
+        InsertLayer(layers, i, "Disposal", MoreCommands.DisposalInterface);
+        InsertLayer(layers, layers.Count, "Title", MoreCommands.TitleInterface);
+    }
+
+    private void InsertLayer(IList<GameInterfaceLayer> layers, int i, string name, UserInterface ui)
+    {
+        layers.Insert(i, new LegacyGameInterfaceLayer("MoreCommands: " + name, delegate
         {
-            if (LastGameTime is not null && MoreCommands.CommandTileInterface?.CurrentState is not null)
-                MoreCommands.CommandTileInterface.Draw(Main.spriteBatch, LastGameTime);
-            
+            if (LastGameTime is not null && ui?.CurrentState is not null)
+                ui.Draw(Main.spriteBatch, LastGameTime);
+
             return true;
-        }, InterfaceScaleType.UI));
-        
-        layers.Insert(i, new LegacyGameInterfaceLayer("MoreCommands: disposal", delegate
-        {
-            if (LastGameTime is not null && MoreCommands.DisposalInterface?.CurrentState is not null)
-                MoreCommands.DisposalInterface.Draw(Main.spriteBatch, LastGameTime);
-            
-            return true;
-        }, InterfaceScaleType.UI));
+        }));
     }
 
     public override void PostUpdateInput()
@@ -60,9 +59,12 @@ public class SystemHooks : ModSystem
 
     public override void UpdateUI(GameTime time)
     {
-        MoreCommands.CommandTileInterface.Update(LastGameTime = time);
+        LastGameTime = time;
+        
+        MoreCommands.CommandTileInterface.Update(time);
         MoreCommands.SuggestionsInterface.Update(time);
         MoreCommands.DisposalInterface.Update(time);
+        MoreCommands.TitleInterface.Update(time);
     }
 
     public override void SaveWorldData(TagCompound tag)
