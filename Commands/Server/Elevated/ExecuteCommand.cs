@@ -41,10 +41,10 @@ public class ExecuteCommand : Command
             .Then(Literal("as")
                 .Then(Argument("player", EntityArgumentType.Player)
                     .Fork(execute, ctx => 
-                        Util.Singleton(ctx.Source.WithCaller(new ServerPlayerCommandCaller(EntityArgumentType.GetPlayer(ctx, "player")))).ToList())))
+                        Util.Singleton(ctx.Source.WithCaller(new ServerPlayerCommandCaller(EntityArgumentType.GetPlayer(ctx, "player")))))))
             .Then(Literal("at")
                 .Then(Argument("player", EntityArgumentType.Player)
-                    .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center)).ToList()))
+                    .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center))))
                 // .Then(Literal("store")
                 //     .Then(addStoreArguments(execute, Literal("result"), true))
                 //     .Then(addStoreArguments(execute, Literal("success"), false)))
@@ -53,7 +53,7 @@ public class ExecuteCommand : Command
                         .Redirect(execute, ctx => ctx.Source.WithPosition(PositionArgumentType.GetPosition(ctx, "pos"))))
                     .Then(Literal("as")
                         .Then(Argument("player", EntityArgumentType.Player)
-                            .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center)).ToList()))))));
+                            .Fork(execute, ctx => Util.Singleton(ctx.Source.WithPosition(EntityArgumentType.GetPlayer(ctx, "player").Center))))))));
     }
     
     private static LiteralArgumentBuilder<CommandSource> AddConditionArguments(CommandNode<CommandSource> root, LiteralArgumentBuilder<CommandSource> argumentBuilder, bool positive)

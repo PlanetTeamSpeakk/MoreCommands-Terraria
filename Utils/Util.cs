@@ -278,7 +278,7 @@ public static class Util
         return t;
     }
 
-    public static IEnumerable<T> Singleton<T>(T value) => Enumerable.Repeat(value, 1);
+    public static List<T> Singleton<T>(T value) => Enumerable.Repeat(value, 1).ToList();
 
     public static IEnumerable<string> QuoteIfHasSpaces(IEnumerable<string> enumerable) => enumerable.Select(s => s.Contains(' ') ? $"\"{s}\"" : s);
 }

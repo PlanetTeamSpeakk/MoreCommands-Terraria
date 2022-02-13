@@ -38,7 +38,7 @@ public class BuffCommand : Command
 
     private static int ExecuteAdd(CommandContext<CommandSource> ctx)
     {
-        IEnumerable<Player> toAffect = (ctx.Nodes.Any(node => node.Node.Name == "players") ? EntityArgumentType.GetPlayers(ctx, "players") : Util.Singleton(ctx.Source.Player)).ToList();
+        IEnumerable<Player> toAffect = (ctx.Nodes.Any(node => node.Node.Name == "players") ? EntityArgumentType.GetPlayers(ctx, "players") : Util.Singleton(ctx.Source.Player));
         
         int buff = ctx.GetArgument<int>("buff");
         int length = ctx.GetArgument<int>("length");
@@ -57,7 +57,7 @@ public class BuffCommand : Command
 
     private static int ExecuteClear(CommandContext<CommandSource> ctx, IEnumerable<Player> players)
     {
-        IEnumerable<Player> toClear = (players ?? Util.Singleton(ctx.Source.Player)).ToList();
+        IEnumerable<Player> toClear = (players ?? Util.Singleton(ctx.Source.Player));
 
         foreach (Player player in toClear)
         {

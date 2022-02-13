@@ -71,14 +71,14 @@ public class EntitySelector
         if (_playerName is not null)
         {
             Player player = Main.player.FirstOrDefault(player => player.name.Equals(_playerName, StringComparison.OrdinalIgnoreCase));
-            return player is null ? new List<Entity>() : Util.Singleton((Entity) player).ToList();
+            return player is null ? new List<Entity>() : Util.Singleton((Entity) player);
         }
 
         Vector2 posOffset = _positionOffset(source.Pos);
         Predicate<Entity> posPredicate = GetPositionPredicate(posOffset);
 
         if (SenderOnly)
-            return source.IsPlayer && posPredicate(source.Player) ? Util.Singleton((Entity) source.Player).ToList() : new List<Entity>();
+            return source.IsPlayer && posPredicate(source.Player) ? Util.Singleton((Entity) source.Player) : new List<Entity>();
 
         List<Entity> entities = ((IEnumerable<Entity>) Main.player.Where(p => p.active)).Concat(Main.npc.Where(npc => npc.type != NPCID.None))
             .Where(entity => posPredicate(entity)).ToList();
@@ -104,14 +104,14 @@ public class EntitySelector
         if (_playerName is not null)
         {
             Player player = Main.player.FirstOrDefault(player => player.name == _playerName);
-            return player is null ? new List<Player>() : Util.Singleton(player).ToList();
+            return player is null ? new List<Player>() : Util.Singleton(player);
         }
 
         Vector2 posOffset = _positionOffset(source.Pos);
         Predicate<Entity> posPredicate = GetPositionPredicate(posOffset);
 
         if (SenderOnly)
-            return source.IsPlayer && posPredicate(source.Player) ? Util.Singleton(source.Player).ToList() : new List<Player>();
+            return source.IsPlayer && posPredicate(source.Player) ? Util.Singleton(source.Player) : new List<Player>();
 
         List<Player> players = Main.player.Where(player => player.active && posPredicate(player)).ToList();
         return GetEntities(posOffset, players);
